@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getTranslation, locales, fmt, dayLabel } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const ph = t.phases;
+const seo = t.seo.phases;
+const list = ph.phases;
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/phases/">
+  <header class="page-head">
+    <h1>{ph.title}</h1>
+  </header>
+
+  <ol class="timeline">
+    {list.map((phase, i) => {
+      const end = list[i + 1]?.startHour ?? 168;
+      return (
+        <li class="entry">
+          <div class="when">
+            <span class="hour">{fmt(ph.hourShort, phase.startHour)}</span>
+            <span class="day">{dayLabel(t, phase.startHour, end)}</span>
+          </div>
+          <div class="rail" aria-hidden="true"><span class="dot"></span></div>
+          <article class="card">
+            <div class="card-title">
+              <span class="badge"><Icon name={phase.icon} size={22} /></span>
+              <div>
+                <h2>{phase.event}</h2>
+                <p class="benefit">{phase.benefit}</p>
+              </div>
+            </div>
+            <p class="range muted">{fmt(ph.hourRange, phase.startHour, end)}</p>
+            <p>{phase.detail}</p>
+          </article>
+        </li>
+      );
+    })}
+  </ol>
+</Layout>
+
+<style>
+  .timeline { list-style: none; display: flex; flex-direction: column; gap: var(--gap); }
+  .entry {
+    display: grid;
+    grid-template-columns: 64px 24px 1fr;
+    column-gap: 8px;
+  }
+
+  /* Hour label and dot line up with the card's icon badge (24px padding + 20px). */
+  .when { padding-top: 32px; text-align: right; display: flex; flex-direction: column; line-height: 1.3; }
+  .hour { font-weight: 650; font-variant-numeric: tabular-nums; }
+  .day { font-size: 0.8rem; color: var(--on-bg-muted); }
+
+  .rail { position: relative; }
+  .rail::before {
+    content: ''; position: absolute; left: 50%; width: 2px; transform: translateX(-50%);
+    top: 0; bottom: calc(-1 * var(--gap));
+    background: var(--outline-variant);
+  }
+  .entry:first-child .rail::before { top: 44px; }
+  .entry:last-child .rail::before { bottom: auto; height: 44px; }
+  .dot {
+    position: absolute; left: 50%; top: 44px; transform: translate(-50%, -50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg); border: 3px solid var(--mauve);
+  }
+
+  .benefit { color: var(--secondary); font-size: 0.95rem; }
+  .range { font-size: 0.85rem; margin-bottom: 8px; }
+
+  @media (max-width: 560px) {
+    .entry { grid-template-columns: 1fr; }
+    .when, .rail { display: none; }
+  }
+</style>

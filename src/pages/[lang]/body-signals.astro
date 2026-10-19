@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const b = t.bodySignals;
+const seo = t.seo.bodySignals;
+
+const groups = [
+  { title: b.good, signals: b.signals.filter((s) => s.positive) },
+  { title: b.issues, signals: b.signals.filter((s) => !s.positive) },
+];
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/body-signals/">
+  <header class="page-head">
+    <h1>{b.title}</h1>
+    <p class="lead">{b.prompt}</p>
+  </header>
+
+  {groups.map((g) => (
+    <section class="group">
+      <h2 class="group-title">{g.title}</h2>
+      <div class="signals">
+        {g.signals.map((s) => (
+          <details class="signal">
+            <summary>
+              <span class="badge"><Icon name={s.icon} size={22} /></span>
+              <h3>{s.name}</h3>
+              <Icon name="expand_more" size={24} class="chevron" />
+            </summary>
+            <div class="signal-body">
+              <h4>{b.whatHappening}</h4>
+              <p>{s.protocol}</p>
+              <div class="todo">
+                <h4>{b.whatToDo}</h4>
+                <div class="items">
+                  {s.actions.map((a) => (
+                    <div class="item">
+                      <h3>{a.title}</h3>
+                      <p class="muted">{a.body}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+  ))}
+</Layout>
+
+<style>
+  .group + .group { margin-top: 40px; }
+  .group-title { color: var(--secondary); margin-bottom: 12px; padding-left: 4px; }
+  .signals { display: flex; flex-direction: column; gap: 10px; }
+
+  .signal { background: var(--surface-low); border-radius: var(--radius-lg); }
+  .signal > summary {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 18px; cursor: pointer; list-style: none;
+    border-radius: var(--radius-lg);
+  }
+  .signal > summary::-webkit-details-marker { display: none; }
+  .signal > summary:hover { background: var(--surface); }
+  .signal > summary h3 { flex: 1; font-size: 1.02rem; font-weight: 600; }
+  .signal > summary :global(.chevron) { color: var(--on-bg-muted); }
+  @media (prefers-reduced-motion: no-preference) {
+    .signal > summary :global(.chevron) { transition: transform 0.2s ease; }
+  }
+  .signal[open] > summary :global(.chevron) { transform: rotate(180deg); }
+
+  .signal-body { padding: 4px 24px 24px; }
+  h4 { font-size: 0.95rem; font-weight: 650; color: var(--secondary); margin-bottom: 6px; }
+  .todo {
+    margin-top: 20px; padding: 20px;
+    border-radius: var(--radius-md);
+    background: var(--secondary-container); color: var(--on-secondary-container);
+  }
+  .todo h4 { color: inherit; margin-bottom: 12px; }
+  .todo .muted { color: inherit; opacity: 0.85; }
+</style>

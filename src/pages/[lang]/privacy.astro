@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const p = t.privacy;
+const seo = t.seo.privacy;
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/privacy/">
+  <header class="page-head">
+    <h1>{p.title}</h1>
+    <p class="lead">{p.intro}</p>
+    <p class="muted updated">{p.lastUpdated}</p>
+  </header>
+
+  <div class="card">
+    <div class="items ruled">
+      {p.sections.map((s) => (
+        <section class="item">
+          <h2>{s.title}</h2>
+          <p class="muted">{s.body}</p>
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .updated { font-size: 0.9rem; margin-top: 8px; }
+  .item h2 { font-size: 1.02rem; margin-bottom: 4px; }
+  .items.ruled .item { padding: 18px 0; }
+</style>

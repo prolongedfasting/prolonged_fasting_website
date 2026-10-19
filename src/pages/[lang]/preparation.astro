@@ -1,0 +1,75 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const p = t.preparation;
+const seo = t.seo.preparation;
+
+const simpleSections = [
+  { icon: 'nightlight', title: p.timingTitle, body: p.timingBody },
+  { icon: 'restaurant', title: p.lastSupperTitle, body: p.lastSupperBody },
+  { icon: 'shopping_bag', title: p.toolkitTitle, body: p.toolkitBody },
+];
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/preparation/">
+  <header class="page-head">
+    <h1>{p.title}</h1>
+  </header>
+
+  <div class="stack">
+    <aside class="notice">
+      <Icon name="info" size={22} />
+      <div>
+        <h2>{p.disclaimerTitle}</h2>
+        <p>{p.disclaimerBody}</p>
+      </div>
+    </aside>
+
+    <section class="card">
+      <div class="card-title">
+        <span class="badge"><Icon name="report_problem" size={22} /></span>
+        <h2>{p.whenNotTitle}</h2>
+      </div>
+      <p>{p.whenNotSubtitle}</p>
+      <div class="items ruled concerns">
+        {p.concerns.map((c) => (
+          <div class="item">
+            <h3>{c.title}</h3>
+            <p class="muted">{c.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {simpleSections.map((s) => (
+      <section class="card">
+        <div class="card-title">
+          <span class="badge"><Icon name={s.icon} size={22} /></span>
+          <h2>{s.title}</h2>
+        </div>
+        <p>{s.body}</p>
+      </section>
+    ))}
+
+    <aside class="notice warning">
+      <Icon name="warning" size={22} />
+      <div>
+        <h2>{p.safetyTitle}</h2>
+        <p>{p.safetyBody}</p>
+      </div>
+    </aside>
+  </div>
+</Layout>
+
+<style>
+  .concerns { margin-top: 18px; }
+</style>

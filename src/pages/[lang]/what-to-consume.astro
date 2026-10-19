@@ -1,0 +1,71 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const c = t.consume;
+const seo = t.seo.whatToConsume;
+
+type Intake = { name: string; amount: string; note: string; extra?: string };
+const groups: { icon: string; title: string; intro?: string; items: Intake[] }[] = [
+  { icon: 'local_drink', title: c.liquidsTitle, items: c.liquids },
+  { icon: 'bolt', title: c.electrolytesTitle, intro: c.electrolytesIntro, items: c.electrolytes },
+  { icon: 'medication', title: c.vitaminsTitle, items: c.vitamins },
+];
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/what-to-consume/">
+  <header class="page-head">
+    <h1>{c.title}</h1>
+    <p class="lead">{c.intro}</p>
+  </header>
+
+  <div class="stack">
+    {groups.map((g) => (
+      <section class="card">
+        <div class="card-title">
+          <span class="badge"><Icon name={g.icon} size={22} /></span>
+          <h2>{g.title}</h2>
+        </div>
+        {g.intro && <p class="muted intro">{g.intro}</p>}
+        <div class="items ruled">
+          {g.items.map((item) => (
+            <div class="item intake">
+              <div class="intake-head">
+                <h3>{item.name}</h3>
+                <span class="amount">{item.amount}</span>
+              </div>
+              <p class="muted">{item.note}</p>
+              {item.extra && <p class="extra">{item.extra}</p>}
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <aside class="notice warning">
+      <Icon name="warning" size={22} />
+      <p>{c.warning}</p>
+    </aside>
+  </div>
+</Layout>
+
+<style>
+  .intro { margin-bottom: 18px; }
+  .intake-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+  .amount {
+    font-weight: 650; font-size: 0.95rem; color: var(--primary);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+  }
+  .extra {
+    margin-top: 10px; padding: 10px 14px; border-radius: 12px;
+    background: var(--surface); font-size: 0.92rem;
+  }
+</style>

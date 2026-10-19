@@ -1,0 +1,28 @@
+---
+// Material Symbols (Apache 2.0, see src/icons/LICENSE), inlined at build time
+// so the site makes no requests to font servers.
+const svgs = import.meta.glob('../icons/*.svg', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+
+interface Props {
+  name: string;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 20, class: className = '' } = Astro.props;
+const raw = svgs[`../icons/${name}.svg`];
+if (!raw) throw new Error(`Icon "${name}" is missing from src/icons`);
+
+const inner = raw.replace(/^<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+---
+
+<svg
+  class={`icon ${className}`.trim()}
+  width={size}
+  height={size}
+  viewBox="0 -960 960 960"
+  fill="currentColor"
+  aria-hidden="true"
+  focusable="false"
+  set:html={inner}
+/>

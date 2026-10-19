@@ -1,0 +1,162 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import PhaseRing from '../../components/PhaseRing.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const h = t.home;
+const seo = t.seo.home;
+
+// Sample state for the app preview: day 2 of a 3-day fast.
+const totalHours = h.ringDays * 24;
+const elapsed = totalHours - h.ringHours;
+const phases = t.phases.phases;
+const currentIndex = phases.findLastIndex((p) => p.startHour <= elapsed);
+const current = phases[currentIndex];
+const next = phases[currentIndex + 1];
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/" wide>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <h1>{h.heroTitle}</h1>
+      <p class="lead">{h.heroBody}</p>
+      <div class="hero-actions">
+        <a class="button" href={t.playStoreUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="android" size={22} />{t.downloadCta}
+        </a>
+        <a class="button text" href={`/${lang}/preparation/`}>{h.heroSecondary}</a>
+      </div>
+    </div>
+
+    <figure class="preview" aria-label={t.ui.appPreview}>
+      <div class="preview-ring">
+        <PhaseRing totalHours={totalHours} elapsedHours={elapsed} phaseStarts={phases.map((p) => p.startHour)} />
+        <div class="preview-center">
+          <span class="preview-hours">{h.ringHours}</span>
+          <span class="muted">{h.ringHoursLabel}</span>
+          <span class="preview-day">{h.ringDayLabel}</span>
+        </div>
+      </div>
+      <div class="preview-phases">
+        <div class="preview-row">
+          <span class="badge"><Icon name={current.icon} size={22} /></span>
+          <div>
+            <span class="overline now">{h.ringNow}</span>
+            <strong>{current.event}</strong>
+            <span class="muted">{current.benefit}</span>
+          </div>
+        </div>
+        {next && (
+          <div class="preview-row">
+            <span class="badge quiet"><Icon name={next.icon} size={22} /></span>
+            <div>
+              <span class="overline">{h.ringNext}</span>
+              <strong>{next.event}</strong>
+            </div>
+          </div>
+        )}
+      </div>
+    </figure>
+  </section>
+
+  <ul class="features">
+    {h.features.map((f) => (
+      <li>
+        <span class="badge"><Icon name={f.icon} size={22} /></span>
+        <h2>{f.title}</h2>
+        <p class="muted">{f.body}</p>
+      </li>
+    ))}
+  </ul>
+
+  <section class="why" aria-labelledby="why-title">
+    <div class="why-head">
+      <h2 id="why-title" class="section-title">{t.whyFast.title}</h2>
+      <p class="lead">{t.whyFast.intro}</p>
+    </div>
+    <div class="why-grid">
+      {t.whyFast.sections.map((s) => (
+        <article class="card">
+          <div class="card-title">
+            <span class="badge"><Icon name={s.icon} size={22} /></span>
+            <h3>{s.title}</h3>
+          </div>
+          <p>{s.body}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .hero {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+    padding: 8px 0 48px;
+  }
+  .hero h1 { font-size: clamp(2.1rem, 5.4vw, 3.4rem); max-width: 16ch; margin-bottom: 18px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+
+  /* App preview: the countdown screen in miniature */
+  .preview {
+    background: var(--surface-low);
+    border-radius: 36px;
+    padding: 28px 24px 24px;
+    max-width: 380px;
+    width: 100%;
+    justify-self: center;
+  }
+  .preview-ring { position: relative; width: 88%; margin: 0 auto; }
+  .preview-center {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; line-height: 1.25;
+  }
+  .preview-hours {
+    font-size: 4.2rem; font-weight: 300; line-height: 1; letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .preview-day { margin-top: 12px; font-weight: 600; font-size: 0.9rem; color: var(--primary); }
+  .preview-phases {
+    margin-top: 24px; background: var(--bg); border-radius: var(--radius-md);
+    padding: 4px 16px;
+  }
+  .preview-row { display: flex; gap: 14px; align-items: center; padding: 12px 0; }
+  .preview-row + .preview-row { border-top: 1px solid var(--outline-variant); }
+  .preview-row div { display: flex; flex-direction: column; line-height: 1.35; font-size: 0.95rem; }
+  .overline { font-size: 0.8rem; color: var(--on-bg-muted); }
+  .overline.now { color: var(--tertiary); font-weight: 600; }
+  .badge.quiet { background: var(--surface-high); color: var(--on-bg-muted); }
+
+  .features {
+    list-style: none;
+    display: grid; gap: var(--gap);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    padding-bottom: 72px;
+  }
+  .features li { padding: 4px 4px 0; }
+  .features .badge { margin-bottom: 14px; }
+  .features h2 { font-size: 1.05rem; margin-bottom: 4px; }
+  .features p { font-size: 0.97rem; }
+
+  .why { border-top: 1px solid var(--outline-variant); padding-top: 56px; }
+  .why-head { max-width: 760px; margin-bottom: 32px; }
+  .section-title { font-size: clamp(1.6rem, 3.6vw, 2.1rem); letter-spacing: -0.02em; margin-bottom: 12px; }
+  .why-grid { display: grid; gap: var(--gap); }
+
+  @media (min-width: 860px) {
+    .hero { grid-template-columns: 1.15fr 1fr; gap: 56px; padding-top: 24px; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>

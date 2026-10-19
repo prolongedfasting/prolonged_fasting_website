@@ -1,0 +1,62 @@
+---
+// The app's countdown ring as static SVG: one segment per fasting phase,
+// filled part shaded through the palette (--ring-1 … --ring-4).
+interface Props {
+  totalHours: number;
+  elapsedHours: number;
+  phaseStarts: number[];
+  size?: number;
+}
+
+const { totalHours, elapsedHours, phaseStarts, size = 280 } = Astro.props;
+
+const stroke = 16;
+const r = (size - stroke) / 2;
+const c = size / 2;
+const gap = 2; // degrees between segments
+const perHour = 360 / totalHours;
+
+const point = (deg: number) => {
+  const rad = ((deg - 90) * Math.PI) / 180;
+  return `${(c + r * Math.cos(rad)).toFixed(2)} ${(c + r * Math.sin(rad)).toFixed(2)}`;
+};
+const arc = (from: number, to: number) =>
+  `M ${point(from)} A ${r} ${r} 0 ${to - from > 180 ? 1 : 0} 1 ${point(to)}`;
+
+// Colour at a position on the ring (0-1), mixed from the four palette stops.
+const colourAt = (t: number) => {
+  const scaled = Math.min(Math.max(t, 0), 0.9999) * 3;
+  const i = Math.floor(scaled);
+  const mix = Math.round((scaled - i) * 100);
+  return `color-mix(in oklab, var(--ring-${i + 1}) ${100 - mix}%, var(--ring-${i + 2}) ${mix}%)`;
+};
+
+const bounds = [0, ...phaseStarts.filter((h) => h > 0 && h < totalHours), totalHours];
+const track: string[] = [];
+const filled: { d: string; colour: string }[] = [];
+
+bounds.slice(0, -1).forEach((from, i) => {
+  const to = bounds[i + 1];
+  const start = from * perHour + gap / 2;
+  const end = to * perHour - gap / 2;
+  if (end <= start) return;
+  track.push(arc(start, end));
+
+  const fillEnd = Math.min(end, elapsedHours * perHour);
+  // Thin slices so the colour can shift smoothly along the arc.
+  for (let a = start; a < fillEnd; a += 3) {
+    const b = Math.min(a + 3.2, fillEnd);
+    filled.push({ d: arc(a, b), colour: colourAt((a + b) / 2 / 360) });
+  }
+});
+---
+
+<svg class="phase-ring" viewBox={`0 0 ${size} ${size}`} width={size} height={size} aria-hidden="true">
+  {track.map((d) => <path d={d} fill="none" stroke="var(--ring-track)" stroke-width={stroke} />)}
+  {/* The attribute is a fallback for browsers without color-mix(). */}
+  {filled.map((s) => <path d={s.d} fill="none" stroke="var(--ring-3)" style={`stroke:${s.colour}`} stroke-width={stroke} />)}
+</svg>
+
+<style>
+  .phase-ring { display: block; width: 100%; height: auto; }
+</style>

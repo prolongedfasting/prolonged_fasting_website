@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/"/>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/preparation/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/preparation/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/preparation/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/preparation/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/preparation/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/preparation/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/what-to-consume/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/what-to-consume/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/what-to-consume/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/what-to-consume/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/what-to-consume/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/what-to-consume/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/body-signals/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/body-signals/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/body-signals/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/body-signals/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/body-signals/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/body-signals/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/phases/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/phases/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/phases/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/phases/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/phases/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/phases/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/fast-break/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/fast-break/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/fast-break/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/fast-break/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/fast-break/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/fast-break/"/>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/en/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/privacy/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://prolongedfasting.github.io/hu/privacy/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://prolongedfasting.github.io/en/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="hu" href="https://prolongedfasting.github.io/hu/privacy/"/>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

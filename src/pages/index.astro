@@ -1,0 +1,20 @@
+---
+// Root page: send visitors to their language. Relative URLs, so it also works
+// on localhost and in `astro preview` (Astro.redirect would bake in the live domain).
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://prolongedfasting.github.io/en/" />
+    <meta http-equiv="refresh" content="0;url=/en/" />
+    <script is:inline>
+      location.replace((navigator.language || '').toLowerCase().startsWith('hu') ? '/hu/' : '/en/');
+    </script>
+    <title>Prolonged Fasting</title>
+  </head>
+  <body>
+    <a href="/en/">English</a> · <a href="/hu/">Magyar</a>
+  </body>
+</html>

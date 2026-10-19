@@ -1,0 +1,60 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Icon from '../../components/Icon.astro';
+import { getTranslation, locales } from '../../i18n/index';
+import type { Locale } from '../../i18n/index';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params as { lang: Locale };
+const t = getTranslation(lang);
+const fb = t.fastBreak;
+const seo = t.seo.fastBreak;
+---
+
+<Layout t={t} lang={lang} title={seo.title} description={seo.description} canonicalPath="/fast-break/">
+  <header class="page-head">
+    <h1>{fb.title}</h1>
+  </header>
+
+  <div class="stack">
+    <section class="card tonal">
+      <div class="card-title">
+        <span class="badge"><Icon name="rule" size={22} /></span>
+        <h2>{fb.rulesTitle}</h2>
+      </div>
+      <div class="items">
+        {fb.rules.map((r) => (
+          <div class="item">
+            <h3>{r.title}</h3>
+            <p class="muted">{r.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {fb.days.map((day) => (
+      <section class="card">
+        <div class="card-title">
+          <span class="badge"><Icon name={day.icon} size={22} /></span>
+          <h2>{day.title}</h2>
+        </div>
+        <p class="muted day-intro">{day.intro}</p>
+        <div class="items ruled">
+          {day.recipes.map((r) => (
+            <div class="item">
+              <h3>{r.title}</h3>
+              <p class="muted">{r.body}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </div>
+</Layout>
+
+<style>
+  .day-intro { margin-bottom: 18px; }
+</style>
